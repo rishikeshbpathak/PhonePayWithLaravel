@@ -14,20 +14,17 @@ class PaymentController extends Controller
     }
     public function phonePe()
     {
-        $amount=1;
         $data = array (
           'merchantId' => 'PGTESTPAYUAT',
           'merchantTransactionId' => uniqid(),
           'merchantUserId' => 'MUID123',
-          'amount' => $amount*100,
+          'amount' => 1,
           'redirectUrl' => route('response'),
           'redirectMode' => 'POST',
           'callbackUrl' => route('response'),
-          'mobileNumber' => '09875432145',
+          'mobileNumber' => '9999999999',
           'paymentInstrument' =>
           array (
-            'type' => 'PAY_PAGE',
-            'mobileNumber' => '12345667888999',
             'type' => 'PAY_PAGE',
           ),
         );
@@ -37,7 +34,6 @@ class PaymentController extends Controller
         $saltIndex = 1;
         $string = $encode.'/pg/v1/pay'.$saltKey;
         $sha256 = hash('sha256',$string);
-
         $finalXHeader = $sha256.'###'.$saltIndex;
         //https://api.phonepe.com/apis/hermes
         $response = Curl::to('https://api-preprod.phonepe.com/apis/merchant-simulator/pg/v1/pay')
@@ -45,30 +41,30 @@ class PaymentController extends Controller
                 ->withHeader('X-VERIFY:'.$finalXHeader)
                 ->withData(json_encode(['request' => $encode]))
                 ->post();
-
         $rData = json_decode($response);
-        //dd($rData);
+        //dd($rData->data);
+         //return redirect(route('response'));
         return redirect()->to($rData->data->instrumentResponse->redirectInfo->url);
-
     }
 
     public function response(Request $request)
     {
-
-    $input = $request->all();
-//  dd($request->all());
-$saltKey = '099eb0cd-02cf-4e2a-8aca-3e6c6aff0399';
-         $saltIndex = 1;
-         $finalXHeader = hash('sha256','/pg/v1/status/'.$input['merchantId'].'/'.$input['transactionId'].$saltKey).'###'.$saltIndex;
-         $response = Curl::to('https://api-preprod.phonepe.com/apis/merchant-simulator/pg/v1/status/'.$input['merchantId'].'/'.$input['transactionId'])
-                ->withHeader('Content-Type:application/json')
-                ->withHeader('accept:application/json')
-                ->withHeader('X-VERIFY:'.$finalXHeader)
-                ->withHeader('X-MERCHANT-ID:'.$input['transactionId'])
-                ->get();
-         dd(json_decode($response));
+         $input = $request->all();
+         dd($request->all());
+        // $saltKey = '099eb0cd-02cf-4e2a-8aca-3e6c6aff0399';
+        // $saltIndex = 1;
+        // $finalXHeader = hash('sha256','/pg/v1/status/'.$input['merchantId'].'/'.$input['transactionId'].$saltKey).'###'.$saltIndex;
+        // $response = Curl::to('https://api-preprod.phonepe.com/apis/merchant-simulator/pg/v1/status/'.$input['merchantId'].'/'.$input['transactionId'])
+        //         ->withHeader('Content-Type:application/json')
+        //         ->withHeader('accept:application/json')
+        //         ->withHeader('X-VERIFY:'.$finalXHeader)
+        //         ->withHeader('X-MERCHANT-ID:'.$input['transactionId'])
+        //         ->get();
+        //  dd(json_decode($response));
 
     }
+
+
     public function refundProcess($tra_id)
     {
         dd('heyss');

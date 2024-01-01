@@ -22,10 +22,15 @@ use App\Http\Controllers\PaymentController;
 // Route::get('/pay', 'PaymentController@initiatePayment');
 //Route::get('/pay', PaymentControlle::class,'index');
 
+Route::group(['middleware' => ['web']], function () {
+    // Your routes go here
+
 Route::get('/',[PaymentController::class,'index']);
 Route::get('phonepe',[PaymentController::class,'phonePe']);
-Route::any('phonepe-response',[PaymentController::class,'response'])->name('response');
+Route::any('/phonepe-response',[PaymentController::class,'response'])->name('response');
 // Route::any('phonepe-response',[PaymentController::class,'response'])->name('response');
 Route::get('refund/{id}',[PaymentController::class,'refundProcess']);
+
+});
 
 
