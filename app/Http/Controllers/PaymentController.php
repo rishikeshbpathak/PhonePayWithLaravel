@@ -65,11 +65,17 @@ class PaymentController extends Controller
         //         ->withHeader('Content-Type:application/json')
         //         ->withHeader('accept:application/json')
         //         ->withHeader('X-VERIFY:'.$finalXHeader)
-        //         ->withHeader('X-MERCHANT-ID:'.$input['transactionId'])
+        //         ->withHeader('X-MERCHANT-ID:'.$input['merchantId'])
         //         ->get();
 
+        //        ->withHeader('X-MERCHANT-ID:'.$input['transactionId'])
         //  dd(json_decode($response));
+        
 
+// Environment	   Base URL
+// Test	           https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay
+// Production	   https://api.phonepe.com/apis/hermes/pg/v1/pay
+        
     }
 
 
